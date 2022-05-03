@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { capitalData } from "../../data";
 import Map from "../map/Map";
 import { useReducer } from "react";
-import { initialState } from "../../Reducer";
-import reducer from "../../Reducer";
+import { initialState } from "../../data";
+import { Reducer } from "../../Reducer";
 
 
 
@@ -43,34 +42,35 @@ const ButtonContainer = styled.div`
 
 
 const Villes = () => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(Reducer, initialState);
 
     return (
         <>
-        <Container>
-            {capitalData.features.map((capitals, index) => (
+            {initialState.capitalData.map((capitals, capital_ID) => (
+        <Container key={capital_ID}>
                 <>
                 {console.log(capitals)}
                 <Wrapper>
                 <div style={{display: "none"}}>
-                 <Map key={index} {...capitals}  />
+                 <Map key={capital_ID} {...capitals}  />
                 </div>
-                <h2>{capitals.properties.name}</h2>
-                <p>{capitals.properties.description}</p>
-                <p>Coordonnées: {[
-                    capitals.geometry.coordinates[0], 
-                    capitals.geometry.coordinates[1]
+                <h2>{capitals.features[0].properties.name}</h2>
+                <p>{capitals.features[0].properties.description}</p>
+                <span>Coordonnées: {[
+                    capitals.features[0].geometry.coordinates, 
+                    capitals.features[1].geometry.coordinates
                 ]}
                 <ButtonContainer>
                 <button onClick={() => dispatch({type: 'ADD_CAPITAL'})}>AJOUTER</button>
                 <button onClick={() => dispatch({type: 'EDIT_CAPITAL'})}>MODIFIER</button>
-                <button onClick={() => dispatch({type: 'REMOVE_CAPITAL'})}>SUPPRIMER</button>
+                <button onClick={() => dispatch({type: 'REMOVE_CAPITAL', capital_ID: capitals.properties.capital_ID})}>SUPPRIMER</button>
                 </ButtonContainer>
-                </p>
+                </span>
                 </Wrapper>
                 </>
-                ))}
+                
         </Container>
+            ))}
         </>
     )
 }

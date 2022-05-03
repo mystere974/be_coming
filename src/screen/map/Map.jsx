@@ -1,4 +1,6 @@
 import NavBar from "../../component/NavBar";
+import { initialState } from "../../data";
+import { Reducer } from "../../Reducer";
 import styled from "styled-components";
 import {
     TileLayer,
@@ -8,7 +10,6 @@ import {
 } from 'react-leaflet';
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css';
-
 
 
 
@@ -34,8 +35,14 @@ const mapIcon = L.icon({
 
 
 const Map = props => {
-    console.log(props);
+    
     const center = [45.04399313916874, -0.39699185132995324]
+    const mapTest = [
+        {name: 'Rome', description:'La capitale de l\'italie, 2873000 habitants', lat: 41.9098128620644, lon: 12.533893273348621},
+        {name: 'Copenhagen', description:'La capitale de la danemark, 5000000 habitants',lat: 55.687499, lon: 12.574722}, 
+        {name: 'Berlin', description:'La capitale de l\'allemagne, 10000000 habitants', lat: 52.52, lon: 13.404954},
+        {name: 'Madrid', description:'La capitale de l\'espagne, 30000000 habitants', lat: 40.4, lon: -3.7037},
+        {name: 'Budapest', description:'La capitale de la hongrie, 17000000 habitants', lat: 47.497912, lon: 19.040235},]
     
     return (
         <div>
@@ -59,22 +66,21 @@ const Map = props => {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
 
-                    
+                    {mapTest.map((e, index) => (
                     <Marker 
-                        key={props.properties.capital_ID} 
+                        key={index} 
                         position={[
-                            props.geometry.coordinates[0],
-                            props.geometry.coordinates[1]
+                            e.lat, e.lon
                             ]}
                         icon={mapIcon}
                         
                         >
                         <Popup>
-                            <h3>{props.properties.name}</h3>
-                            <p>{props.properties.description}</p>
+                            <h3>{e.name}</h3>
+                            <p>{e.description}</p>
                         </Popup>
                     </Marker>
-                    
+                    ))}
                 </MapContainer>
             </Container>
         </div>
